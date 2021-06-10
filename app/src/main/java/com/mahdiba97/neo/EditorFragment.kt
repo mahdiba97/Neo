@@ -1,31 +1,26 @@
 package com.mahdiba97.neo
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
+import com.mahdiba97.neo.databinding.EditorFragmentBinding
 
 class EditorFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = EditorFragment()
-    }
-
+    private val args: EditorFragmentArgs by navArgs()
     private lateinit var viewModel: EditorViewModel
-
+    private lateinit var binding: EditorFragmentBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.editor_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+        binding = EditorFragmentBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(this).get(EditorViewModel::class.java)
-        // TODO: Use the ViewModel
+        binding.noteEditor.setText(args.id.toString())
+        return binding.root
     }
 
 }

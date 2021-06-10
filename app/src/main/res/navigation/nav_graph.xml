@@ -18,5 +18,10 @@
         android:id="@+id/editorFragment"
         android:name="com.mahdiba97.neo.EditorFragment"
         android:label="editor_fragment"
-        tools:layout="@layout/editor_fragment" />
+        tools:layout="@layout/editor_fragment" >
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
 </navigation>

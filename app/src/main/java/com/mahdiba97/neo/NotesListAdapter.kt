@@ -9,7 +9,7 @@ import com.mahdiba97.neo.databinding.ListItemBinding
 
 class NotesListAdapter(
     private val notesList: List<NoteEntity>,
-//    private val listener: ListItemListener
+    private val listener: ListItemListener
 ) :
     RecyclerView.Adapter<NotesListAdapter.ViewHolder>() {
     val selectedNotes = arrayListOf<NoteEntity>()
@@ -31,9 +31,9 @@ class NotesListAdapter(
         val note = notesList[position]
         with(holder.binding) {
             noteText.text = note.text
-//            root.setOnClickListener {
-//                listener.editingNote(note.id)
-//            }
+            root.setOnClickListener {
+                listener.editingNote(note.id)
+            }
 
 //            fab.setOnClickListener {
 //                if (selectedNotes.contains(note)) {
@@ -53,8 +53,8 @@ class NotesListAdapter(
 
     }
 
-//    interface ListItemListener {
-//        fun editingNote(noteId: Int)
+    interface ListItemListener {
+        fun editingNote(noteId: Int)
 //        fun onItemSelectionChanged()
-//    }
+    }
 }
