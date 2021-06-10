@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-class Welcome : Fragment() {
+class MainFragment : Fragment() {
 
     companion object {
-        fun newInstance() = Welcome()
+        fun newInstance() = MainFragment()
     }
 
     private lateinit var viewModel: WelcomeViewModel
@@ -19,7 +19,7 @@ class Welcome : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.welcome_fragment, container, false)
+        return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
