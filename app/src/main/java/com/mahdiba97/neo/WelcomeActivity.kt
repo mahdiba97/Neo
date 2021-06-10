@@ -13,6 +13,6 @@ class WelcomeActivity : AppCompatActivity() {
         supportActionBar?.hide()
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, MainActivity::class.java))
-        }, 5500)
+        }, 2500)
     }
 }
