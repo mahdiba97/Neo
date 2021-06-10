@@ -9,5 +9,14 @@
         android:id="@+id/welcome"
         android:name="com.mahdiba97.neo.MainFragment"
         android:label="welcome_fragment"
-        tools:layout="@layout/main_fragment" />
+        tools:layout="@layout/main_fragment" >
+        <action
+            android:id="@+id/action_editor_fragment"
+            app:destination="@id/editorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editorFragment"
+        android:name="com.mahdiba97.neo.EditorFragment"
+        android:label="editor_fragment"
+        tools:layout="@layout/editor_fragment" />
 </navigation>
