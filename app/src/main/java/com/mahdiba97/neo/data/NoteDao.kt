@@ -1,8 +1,7 @@
-package mahdiba97.notes.data
+package com.mahdiba97.neo.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.mahdiba97.neo.data.NoteEntity
 
 @Dao
 interface NoteDao {

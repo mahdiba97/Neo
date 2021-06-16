@@ -35,26 +35,26 @@ class NotesListAdapter(
                 listener.editingNote(note.id)
             }
 
-//            fab.setOnClickListener {
-//                if (selectedNotes.contains(note)) {
-//                    selectedNotes.remove(note)
-//                    fab.setImageResource(R.drawable.ic_note)
-//                } else {
-//                    selectedNotes.add(note)
-//                    fab.setImageResource(R.drawable.ic_check)
-//                }
-//                listener.onItemSelectionChanged()
-//            }
-//            fab.setImageResource(
-//                if (selectedNotes.contains(note)) R.drawable.ic_check
-//                else R.drawable.ic_note
-//            )
+            fab.setOnClickListener {
+                if (selectedNotes.contains(note)) {
+                    selectedNotes.remove(note)
+                    fab.setImageResource(R.drawable.ic_note)
+                } else {
+                    selectedNotes.add(note)
+                    fab.setImageResource(R.drawable.ic_check)
+                }
+                listener.onItemSelectionChanged()
+            }
+            fab.setImageResource(
+                if (selectedNotes.contains(note)) R.drawable.ic_check
+                else R.drawable.ic_note
+            )
         }
 
     }
 
     interface ListItemListener {
         fun editingNote(noteId: Int)
-//        fun onItemSelectionChanged()
+        fun onItemSelectionChanged()
     }
 }
