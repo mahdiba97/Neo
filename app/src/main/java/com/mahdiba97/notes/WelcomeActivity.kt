@@ -1,4 +1,4 @@
-package com.mahdiba97.neo
+package com.mahdiba97.notes
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

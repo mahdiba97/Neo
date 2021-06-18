@@ -1,4 +1,4 @@
-package com.mahdiba97.neo
+package com.mahdiba97.notes
 
 import org.junit.Test
 

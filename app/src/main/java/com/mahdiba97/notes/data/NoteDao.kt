@@ -1,4 +1,4 @@
-package com.mahdiba97.neo.data
+package com.mahdiba97.notes.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

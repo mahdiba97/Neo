@@ -1,10 +1,10 @@
-package com.mahdiba97.neo
+package com.mahdiba97.notes
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.mahdiba97.neo.data.AppDatabase
-import com.mahdiba97.neo.data.NoteEntity
+import com.mahdiba97.notes.data.AppDatabase
+import com.mahdiba97.notes.data.NoteEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

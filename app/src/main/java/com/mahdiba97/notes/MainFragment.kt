@@ -1,4 +1,4 @@
-package com.mahdiba97.neo
+package com.mahdiba97.notes
 
 import android.os.Bundle
 import android.os.Handler
@@ -8,10 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mahdiba97.neo.data.NoteEntity
-import com.mahdiba97.neo.databinding.MainFragmentBinding
+import com.mahdiba97.notes.data.NoteEntity
+import com.mahdiba97.notes.databinding.MainFragmentBinding
 
 class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
     private lateinit var binding: MainFragmentBinding

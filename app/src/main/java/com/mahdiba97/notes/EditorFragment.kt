@@ -1,4 +1,4 @@
-package com.mahdiba97.neo
+package com.mahdiba97.notes
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.mahdiba97.neo.data.NoteEntity
-import com.mahdiba97.neo.databinding.EditorFragmentBinding
+import com.mahdiba97.notes.data.NoteEntity
+import com.mahdiba97.notes.databinding.EditorFragmentBinding
 import java.util.*
 
 class EditorFragment : Fragment() {

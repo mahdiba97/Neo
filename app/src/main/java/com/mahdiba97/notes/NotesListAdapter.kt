@@ -1,11 +1,11 @@
-package com.mahdiba97.neo
+package com.mahdiba97.notes
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.mahdiba97.neo.data.NoteEntity
-import com.mahdiba97.neo.databinding.ListItemBinding
+import com.mahdiba97.notes.data.NoteEntity
+import com.mahdiba97.notes.databinding.ListItemBinding
 
 class NotesListAdapter(
     private val notesList: List<NoteEntity>,

@@ -1,4 +1,4 @@
-package com.mahdiba97.neo
+package com.mahdiba97.notes
 
 const val NEW_NOTE_ID = 0
 const val NOTE_TEXT_KEY = "noteTextKey"
