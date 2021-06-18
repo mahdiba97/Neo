@@ -12,12 +12,13 @@ class NotesListAdapter(
     private val listener: ListItemListener
 ) :
     RecyclerView.Adapter<NotesListAdapter.ViewHolder>() {
-    val selectedNotes = arrayListOf<NoteEntity>()
+    var selectedNotes = arrayListOf<NoteEntity>()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ListItemBinding.bind(itemView)
 
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(

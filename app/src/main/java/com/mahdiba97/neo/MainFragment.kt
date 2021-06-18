@@ -1,10 +1,8 @@
 package com.mahdiba97.neo
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -12,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mahdiba97.neo.data.NoteEntity
 import com.mahdiba97.neo.databinding.MainFragmentBinding
 
 class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
@@ -23,7 +22,10 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        (activity as AppCompatActivity).supportActionBar?.let {
+            it.setDisplayHomeAsUpEnabled(false)
+            it.title = getString(R.string.app_name)
+        }
         setHasOptionsMenu(true)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         binding = MainFragmentBinding.inflate(inflater, container, false)
@@ -36,8 +38,23 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
             adapter = NotesListAdapter(it, this@MainFragment)
             binding.mainRecycler.adapter = adapter
             binding.mainRecycler.layoutManager = LinearLayoutManager(activity)
+            val selectedNote =
+                savedInstanceState?.getParcelableArrayList<NoteEntity>(SELECTED_NOTE_KEY)
+                    ?: emptyList<NoteEntity>()
+            adapter.selectedNotes.addAll(selectedNote)
+
         })
+        binding.fabMain.setOnClickListener {
+            editingNote(NEW_NOTE_ID)
+        }
         return binding.root
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (this::adapter.isInitialized) {
+            outState.putParcelableArrayList(SELECTED_NOTE_KEY, adapter.selectedNotes)
+        }
+        super.onSaveInstanceState(outState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -69,7 +86,6 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
     }
 
     override fun editingNote(noteId: Int) {
-        Log.i("TAG__", noteId.toString())
         val action = MainFragmentDirections.actionEditorFragment(noteId)
         findNavController().navigate(action)
     }
