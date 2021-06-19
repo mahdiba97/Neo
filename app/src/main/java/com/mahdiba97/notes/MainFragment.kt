@@ -71,6 +71,9 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_delete -> deleteNotes()
+            R.id.action_settings -> {
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
 
