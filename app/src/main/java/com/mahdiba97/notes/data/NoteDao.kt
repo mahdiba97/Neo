@@ -9,11 +9,14 @@ interface NoteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNote(note: NoteEntity)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(notes: List<NoteEntity>)
 
     @Query("SELECT * FROM notes ORDER BY date DESC")
     fun getAll(): LiveData<List<NoteEntity>>
+
+    @Query("SELECT * FROM NOTES ORDER BY DATE DESC")
+    fun getAllNotes(): List<NoteEntity>
 
     @Query("SELECT * FROM notes WHERE id = :id")
     fun getNote(id: Int): NoteEntity?
