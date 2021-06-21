@@ -29,21 +29,23 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
         setHasOptionsMenu(true)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         binding = MainFragmentBinding.inflate(inflater, container, false)
+//        Set up recycler
         with(binding.mainRecycler) {
             setHasFixedSize(true)
             val divider = DividerItemDecoration(context, LinearLayoutManager(context).orientation)
             addItemDecoration(divider)
         }
         viewModel.notesList?.observe(viewLifecycleOwner, {
+//            Set up adapter
             adapter = NotesListAdapter(it, this@MainFragment)
             binding.mainRecycler.adapter = adapter
             binding.mainRecycler.layoutManager = LinearLayoutManager(activity)
-            val selectedNote =
-                savedInstanceState?.getParcelableArrayList<NoteEntity>(SELECTED_NOTE_KEY)
-                    ?: emptyList<NoteEntity>()
+//            Save recycler selected notes state when orientation change
+            val selectedNote = savedInstanceState?.getParcelableArrayList(SELECTED_NOTE_KEY)
+                ?: emptyList<NoteEntity>()
             adapter.selectedNotes.addAll(selectedNote)
-
         })
+//        Fab click event
         binding.fabMain.setOnClickListener {
             editingNote(NEW_NOTE_ID)
         }
@@ -63,7 +65,6 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
             R.menu.delete_menu_main
         else
             R.menu.menu_main
-
         inflater.inflate(menuId, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -71,7 +72,12 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_delete -> deleteNotes()
-            R.id.action_settings -> {
+            R.id.action_send -> {
+                viewModel.sendDataToWebservice()
+                true
+            }
+            R.id.action_receive -> {
+                viewModel.getDataFromWebservice()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -81,19 +87,21 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
 
     private fun deleteNotes(): Boolean {
         viewModel.deleteNotes(adapter.selectedNotes)
+        viewModel.deleteDataFromServer(adapter.selectedNotes)
         Handler(Looper.getMainLooper()).postDelayed({
             adapter.selectedNotes.clear()
-            requireActivity().invalidateOptionsMenu()
+            onItemSelectionChanged()
         }, 100)
         return true
     }
 
+    // This method comes from NotesListAdapter
     override fun editingNote(noteId: Int) {
         val action = MainFragmentDirections.actionEditorFragment(noteId)
         findNavController().navigate(action)
     }
 
-    //    Reset options menu
+    //    Reset optionsMenu
     override fun onItemSelectionChanged() {
         requireActivity().invalidateOptionsMenu()
     }
