@@ -4,17 +4,16 @@ plugins {
     id "androidx.navigation.safeargs.kotlin"
     id "kotlin-kapt"
     id "kotlin-android-extensions"
-    id 'com.google.gms.google-services'
 }
 apply plugin: 'kotlin-android-extensions'
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.mahdiba97.notes"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
@@ -68,15 +67,9 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
 
-    implementation "androidx.recyclerview:recyclerview:1.2.1"
-
-//    Firebase
-    implementation platform('com.google.firebase:firebase-bom:28.1.0')
-    implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-auth'
-
-//    Retrofit
+//    Retrofit and Logging
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.3.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
+//    implementation 'com.squareup.okhttp3:okhttp:4.3.1'
 }
