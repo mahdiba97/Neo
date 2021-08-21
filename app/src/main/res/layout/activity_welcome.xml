@@ -6,30 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".WelcomeActivity">
 
-<!--    <com.airbnb.lottie.LottieAnimationView-->
-<!--        android:id="@+id/lottie_background"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:lottie_autoPlay="true"-->
-<!--        app:lottie_loop="true"-->
-<!--        app:lottie_rawRes="@raw/background"-->
-<!--        app:lottie_url="asf" />-->
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottie_neo"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <ImageView
+        android:id="@+id/iv_welcome"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/notes"
-        app:lottie_url="asf" />
+        app:srcCompat="@drawable/ic_notes_logo"
+        tools:ignore="ContentDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>
