@@ -73,11 +73,9 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
         return when (item.itemId) {
             R.id.action_delete -> deleteNotes()
             R.id.action_send -> {
-                viewModel.sendDataToWebservice()
                 true
             }
             R.id.action_receive -> {
-                viewModel.getDataFromWebservice()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -87,7 +85,6 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
 
     private fun deleteNotes(): Boolean {
         viewModel.deleteNotes(adapter.selectedNotes)
-        viewModel.deleteDataFromServer(adapter.selectedNotes)
         Handler(Looper.getMainLooper()).postDelayed({
             adapter.selectedNotes.clear()
             onItemSelectionChanged()
