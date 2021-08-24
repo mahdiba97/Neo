@@ -6,4 +6,7 @@
     <string name="edit_note">Edit note</string>
     <string name="send">Send</string>
     <string name="receive">Receive</string>
+    <string name="settings">settings</string>
+    <string name="about">about</string>
+    <string name="share">share</string>
 </resources>
