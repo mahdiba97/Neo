@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -22,7 +22,7 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (activity as AppCompatActivity).supportActionBar?.let {
+        actionbar(activity)?.let {
             it.setDisplayHomeAsUpEnabled(false)
             it.title = getString(R.string.app_name)
         }
@@ -49,8 +49,29 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
         binding.fabMain.setOnClickListener {
             editingNote(NEW_NOTE_ID)
         }
+        onBackPressed()
         return binding.root
     }
+
+
+    private fun onBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (adapter.selectedNotes.isEmpty()) {
+                        super.remove()
+                    } else {
+                        actionbar(activity)?.setDisplayHomeAsUpEnabled(false)
+                        actionbar(activity)?.title = getString(R.string.app_name)
+                        adapter.selectedNotes.clear()
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+
+            })
+    }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         if (this::adapter.isInitialized) {
@@ -60,24 +81,32 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        val menuId = if (
-            this::adapter.isInitialized && adapter.selectedNotes.isNotEmpty())
-            R.menu.delete_menu_main
-        else
-            R.menu.menu_main
+        var menuId = 0
+        if (
+            this::adapter.isInitialized && adapter.selectedNotes.isNotEmpty()) {
+            menuId = R.menu.delete_menu_main
+            actionbar(activity)?.setDisplayHomeAsUpEnabled(true)
+        } else {
+            actionbar(activity)?.setDisplayHomeAsUpEnabled(false)
+            menuId = R.menu.menu_main
+        }
         inflater.inflate(menuId, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            android.R.id.home -> {
+                actionbar(activity)?.setDisplayHomeAsUpEnabled(false)
+                actionbar(activity)?.title = getString(R.string.app_name)
+                adapter.selectedNotes.clear()
+                adapter.notifyDataSetChanged()
+                true
+            }
             R.id.action_delete -> deleteNotes()
-            R.id.action_send -> {
-                true
-            }
-            R.id.action_receive -> {
-                true
-            }
+            R.id.action_share -> true
+            R.id.action_settings -> true
+            R.id.action_about -> true
             else -> super.onOptionsItemSelected(item)
         }
 
@@ -87,7 +116,7 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
         viewModel.deleteNotes(adapter.selectedNotes)
         Handler(Looper.getMainLooper()).postDelayed({
             adapter.selectedNotes.clear()
-            onItemSelectionChanged()
+            onItemSelectionChanged(0)
         }, 100)
         return true
     }
@@ -99,7 +128,12 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
     }
 
     //    Reset optionsMenu
-    override fun onItemSelectionChanged() {
+    override fun onItemSelectionChanged(count: Int) {
+        actionbar(activity)?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+        if (count != 0) {
+            actionbar(activity)?.title = count.toString()
+        } else
+            actionbar(activity)?.title = getString(R.string.app_name)
         requireActivity().invalidateOptionsMenu()
     }
 }

@@ -32,8 +32,10 @@ class NotesListAdapter(
         val note = notesList[position]
         with(holder.binding) {
             noteText.text = note.text
-            root.setOnClickListener {
-                listener.editingNote(note.id)
+            if (selectedNotes.isEmpty()) {
+                root.setOnClickListener {
+                    listener.editingNote(note.id)
+                }
             }
 
             fab.setOnClickListener {
@@ -44,7 +46,7 @@ class NotesListAdapter(
                     selectedNotes.add(note)
                     fab.setImageResource(R.drawable.ic_check)
                 }
-                listener.onItemSelectionChanged()
+                listener.onItemSelectionChanged(selectedNotes.size)
             }
             fab.setImageResource(
                 if (selectedNotes.contains(note)) R.drawable.ic_check
@@ -52,10 +54,11 @@ class NotesListAdapter(
             )
         }
 
+
     }
 
     interface ListItemListener {
         fun editingNote(noteId: Int)
-        fun onItemSelectionChanged()
+        fun onItemSelectionChanged(count: Int)
     }
 }
