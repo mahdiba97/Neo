@@ -1,5 +1,6 @@
 package com.mahdiba97.notes
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -81,7 +82,7 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        var menuId = 0
+        val menuId: Int
         if (
             this::adapter.isInitialized && adapter.selectedNotes.isNotEmpty()) {
             menuId = R.menu.delete_menu_main
@@ -104,7 +105,18 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
                 true
             }
             R.id.action_delete -> deleteNotes()
-            R.id.action_share -> true
+            R.id.action_share -> {
+                val stringBuilder = StringBuilder()
+                for (i in adapter.selectedNotes) {
+                    stringBuilder.append("$i \n")
+                }
+                val intent = Intent(Intent.ACTION_SEND)
+                intent.type = "text/plain"
+                intent.putExtra(Intent.EXTRA_SUBJECT, stringBuilder.toString())
+                intent.putExtra(Intent.EXTRA_TEXT, stringBuilder.toString())
+                startActivity(Intent.createChooser(intent, "Share Note"))
+                true
+            }
             R.id.action_settings -> true
             R.id.action_about -> true
             else -> super.onOptionsItemSelected(item)

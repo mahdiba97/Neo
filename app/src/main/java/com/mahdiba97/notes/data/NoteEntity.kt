@@ -16,4 +16,8 @@ class NoteEntity(
     var text: String
 ) : Parcelable {
     constructor(text: String) : this(NEW_NOTE_ID, Date(), text)
+
+    override fun toString(): String {
+        return text
+    }
 }
