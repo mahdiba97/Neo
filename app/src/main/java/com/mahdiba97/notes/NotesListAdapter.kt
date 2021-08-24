@@ -32,11 +32,13 @@ class NotesListAdapter(
         val note = notesList[position]
         with(holder.binding) {
             noteText.text = note.text
-            if (selectedNotes.isEmpty()) {
-                root.setOnClickListener {
+
+            root.setOnClickListener {
+                if (selectedNotes.size == 0) {
                     listener.editingNote(note.id)
                 }
             }
+
 
             fab.setOnClickListener {
                 if (selectedNotes.contains(note)) {
