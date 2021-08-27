@@ -117,7 +117,10 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
                 startActivity(Intent.createChooser(intent, "Share Note"))
                 true
             }
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                startActivity(Intent(context, SettingsActivity::class.java))
+                true
+            }
             R.id.action_about -> true
             else -> super.onOptionsItemSelected(item)
         }
