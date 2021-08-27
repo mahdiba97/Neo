@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/blue_grey_200</item>
         <item name="colorPrimaryVariant">@color/blue_grey_700</item>
         <item name="colorOnPrimary">@color/black</item>
+        <item name="android:listDivider">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/orange_200</item>
         <item name="colorSecondaryVariant">@color/orange_200</item>
