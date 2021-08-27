@@ -67,6 +67,7 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
                         actionbar(activity)?.title = getString(R.string.app_name)
                         adapter.selectedNotes.clear()
                         adapter.notifyDataSetChanged()
+                        requireActivity().invalidateOptionsMenu()
                     }
                 }
 
@@ -102,6 +103,7 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
                 actionbar(activity)?.title = getString(R.string.app_name)
                 adapter.selectedNotes.clear()
                 adapter.notifyDataSetChanged()
+                requireActivity().invalidateOptionsMenu()
                 true
             }
             R.id.action_delete -> deleteNotes()
