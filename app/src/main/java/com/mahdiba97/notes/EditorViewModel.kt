@@ -2,6 +2,7 @@ package com.mahdiba97.notes
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mahdiba97.notes.data.AppDatabase
@@ -11,13 +12,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class EditorViewModel(app: Application) : AndroidViewModel(app) {
-    val database = AppDatabase.getInstance(app)
-    val currentNote = MutableLiveData<NoteEntity>()
+    private val database = AppDatabase.getInstance(app)
+    private val _currentNote = MutableLiveData<NoteEntity>()
+    val currentNote: LiveData<NoteEntity> = _currentNote
     fun getNoteById(noteId: Int) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val noteEntity = database?.noteDao()?.getNote(noteId)
-                currentNote.postValue(noteEntity!!)
+                _currentNote.postValue(noteEntity!!)
             }
         }
     }
