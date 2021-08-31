@@ -1,6 +1,8 @@
 package com.mahdiba97.notes
 
 import android.content.Context
+import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 
 const val THEME_KEY = "theme_key"
@@ -8,15 +10,19 @@ const val LANGUAGE_KEY = "language_key"
 
 class PrefHelper {
     companion object {
-        private fun pref(context: Context) = PreferenceManager.getDefaultSharedPreferences(context)
+         fun pref(context: Context): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
 
-        fun getTheme(context: Context): String {
-            return pref(context).getString(THEME_KEY, "Default").toString()
+        fun setTheme(context: Context) {
+            when (pref(context).getString(THEME_KEY, "Default").toString()) {
+                "Light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                "Night" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
         }
 
-        fun getLanguage(context: Context): String {
-            return pref(context).getString(LANGUAGE_KEY, "English").toString()
+        fun setLanguage(context: Context) {
+        // TODO: Implement adding new language to the application
         }
     }
 }
