@@ -28,7 +28,7 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
             it.title = getString(R.string.app_name)
         }
         setHasOptionsMenu(true)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         binding = MainFragmentBinding.inflate(inflater, container, false)
 //        Set up recycler
         with(binding.mainRecycler) {
@@ -112,10 +112,11 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
                 for (i in adapter.selectedNotes) {
                     stringBuilder.append("$i \n")
                 }
-                val intent = Intent(Intent.ACTION_SEND)
-                intent.type = "text/plain"
-                intent.putExtra(Intent.EXTRA_SUBJECT, stringBuilder.toString())
-                intent.putExtra(Intent.EXTRA_TEXT, stringBuilder.toString())
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, stringBuilder.toString())
+                }
                 startActivity(Intent.createChooser(intent, "Share Note"))
                 true
             }

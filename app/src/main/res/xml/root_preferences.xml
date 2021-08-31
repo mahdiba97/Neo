@@ -4,6 +4,7 @@
         app:allowDividerAbove="true"
         app:allowDividerBelow="true"
         app:iconSpaceReserved="false"
+        app:isPreferenceVisible="true"
         app:title="@string/interface_header">
 
 
@@ -12,7 +13,7 @@
             app:entries="@array/language_entries"
             app:entryValues="@array/language_values"
             app:iconSpaceReserved="false"
-            app:key="reply"
+            app:key="language_key"
             app:title="@string/language_title"
             app:useSimpleSummaryProvider="true" />
 
@@ -21,7 +22,7 @@
             app:entries="@array/theme_entries"
             app:entryValues="@array/theme_values"
             app:iconSpaceReserved="false"
-            app:key="reply1"
+            app:key="theme_key"
             app:title="@string/theme_title"
             app:useSimpleSummaryProvider="true" />
 
