@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">یادداشت</string>
+    <string name="enter_note">یادداشت رو وارد کن</string>
+    <string name="new_note">یادداشت جدید</string>
+    <string name="edit_note">ویرایش یادداشت</string>
+    <string name="settings">تنظیمات</string>
+    <string name="about">درباره</string>
+    <string name="interface_header">رابط</string>
+    <string name="language_title">زبان</string>
+    <string name="theme_title">پوسته</string>
+    <string name="share">اشتراک گذاری</string>
+    <string name="delete">حذف</string>
+</resources>

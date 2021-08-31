@@ -2,15 +2,16 @@ package com.mahdiba97.notes
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
+import java.util.*
 
-const val THEME_KEY = "theme_key"
-const val LANGUAGE_KEY = "language_key"
 
 class PrefHelper {
     companion object {
-         fun pref(context: Context): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        fun pref(context: Context): SharedPreferences =
+            PreferenceManager.getDefaultSharedPreferences(context)
 
 
         fun setTheme(context: Context) {
@@ -22,7 +23,16 @@ class PrefHelper {
         }
 
         fun setLanguage(context: Context) {
-        // TODO: Implement adding new language to the application
+
+            val local = when (pref(context).getString(LANGUAGE_KEY, "Default").toString()) {
+                "Persian" -> Locale("fa")
+                else -> Locale("en")
+            }
+            Log.i("Pref", local.displayLanguage)
+            val resources = context.resources
+            Locale.setDefault(local)
+            resources.configuration.setLocale(local)
+            resources.updateConfiguration(resources.configuration, resources.displayMetrics)
         }
     }
 }

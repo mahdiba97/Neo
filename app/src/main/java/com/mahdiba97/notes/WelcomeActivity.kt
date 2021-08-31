@@ -11,7 +11,6 @@ class WelcomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
         PrefHelper.setTheme(this)
-        PrefHelper.setLanguage(this)
         supportActionBar?.hide()
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, MainActivity::class.java))
