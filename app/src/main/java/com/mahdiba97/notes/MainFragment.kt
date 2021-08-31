@@ -147,7 +147,11 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
 
     //    Reset optionsMenu
     override fun onItemSelectionChanged(count: Int) {
-        actionbar(activity)?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+        val arrowDirection = when (PrefHelper.getLanguage(requireContext())) {
+            "Persian" -> R.drawable.ic_arrow_forward
+            else -> R.drawable.ic_arrow_back
+        }
+        actionbar(activity)?.setHomeAsUpIndicator(arrowDirection)
         if (count != 0) {
             actionbar(activity)?.title = count.toString()
         } else
