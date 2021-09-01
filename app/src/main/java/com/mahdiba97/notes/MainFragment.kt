@@ -117,7 +117,7 @@ class MainFragment : Fragment(), NotesListAdapter.ListItemListener {
                     type = "text/plain"
                     putExtra(Intent.EXTRA_TEXT, stringBuilder.toString())
                 }
-                startActivity(Intent.createChooser(intent, "Share Note"))
+                startActivity(Intent.createChooser(intent, getString(R.string.share)))
                 true
             }
             R.id.action_settings -> {
