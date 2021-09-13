@@ -11,20 +11,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.jakewharton.rxrelay3.BehaviorRelay
 import com.mahdiba97.notes.data.NoteEntity
 import com.mahdiba97.notes.databinding.MainFragmentBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 
-class MainFragment : Fragment(), NotesListAdapter.OnItemSelectListener {
+class MainFragment : Fragment() {
   private lateinit var binding: MainFragmentBinding
   private lateinit var viewModel: MainViewModel
   private lateinit var adapter: NotesListAdapter
   private val bag = CompositeDisposable()
   override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?,
+    inflater: LayoutInflater,
+    container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
     actionbar(activity)?.let {
@@ -44,23 +44,30 @@ class MainFragment : Fragment(), NotesListAdapter.OnItemSelectListener {
   }
 
   private fun notesListSetup(savedInstanceState: Bundle?) {
+    adapter = NotesListAdapter({ //onClick
+      navigateToEditorFragment(it)
+    }, {//number on selected item, it's for change toolbar title to recursive number
+      changeTitleAndArrowDirection(it)
+    })
+
+    adapter.notesItem.subscribeOn(AndroidSchedulers.mainThread()).subscribe {
+      for (i in adapter.positions)
+        adapter.notifyItemChanged(i)
+    }.addTo(bag)
     with(binding.mainRecycler) {
       setHasFixedSize(true)
       val divider = DividerItemDecoration(context, LinearLayoutManager(context).orientation)
       addItemDecoration(divider)
     }
     viewModel.notesList?.observe(viewLifecycleOwner, { notes ->
-      adapter = NotesListAdapter(notes, this)
+      adapter.notesItem.onNext(notes)
       binding.mainRecycler.adapter = adapter
       binding.mainRecycler.layoutManager = LinearLayoutManager(activity)
-//            Save recycler selected notes state when orientation change
+
       val selectedNote = savedInstanceState?.getParcelableArrayList(SELECTED_NOTE_KEY)
-        ?: emptyList<NoteEntity>()
+        ?: emptyList<NoteEntity>() //save state of the selected items when orientation change
       adapter.selectedNotes.addAll(selectedNote)
     })
-    NotesListAdapter.numberOfSelectedItems.observeOn(AndroidSchedulers.mainThread()).subscribe {
-      changeTitleAndArrowDirection(it)
-    }.addTo(bag)
   }
 
 
@@ -127,16 +134,14 @@ class MainFragment : Fragment(), NotesListAdapter.OnItemSelectListener {
   }
 
   private fun handleBackPressedEvent() {
-    NotesListAdapter.positionOfSelectedItems.subscribe {
-      for (i in it) {
-        adapter.notifyItemChanged(i)
-      }
+    val positions = adapter.positions
+    for (i in positions) {
+      adapter.notifyItemChanged(i)
     }
-    NotesListAdapter.numberOfSelectedItems.accept(0)
-    actionbar(activity)?.setDisplayHomeAsUpEnabled(false)
-    actionbar(activity)?.title = getString(R.string.app_name)
     adapter.selectedNotes.clear()
     adapter.positions.clear()
+    actionbar(activity)?.setDisplayHomeAsUpEnabled(false)
+    actionbar(activity)?.title = getString(R.string.app_name)
     requireActivity().invalidateOptionsMenu()
   }
 
@@ -150,7 +155,7 @@ class MainFragment : Fragment(), NotesListAdapter.OnItemSelectListener {
     return true
   }
 
-  override fun navigateToEditorFragment(noteId: Int) {
+  private fun navigateToEditorFragment(noteId: Int) {
     val action = MainFragmentDirections.actionEditorFragment(noteId)
     findNavController().navigate(action)
   }
@@ -166,7 +171,7 @@ class MainFragment : Fragment(), NotesListAdapter.OnItemSelectListener {
       actionbar(activity)?.title = count.toString()
     } else
       actionbar(activity)?.title = getString(R.string.app_name)
-    requireActivity().invalidateOptionsMenu()    //Reset optionsMenu
+    requireActivity().invalidateOptionsMenu()   //Reset optionsMenu
   }
 
   override fun onDestroy() {

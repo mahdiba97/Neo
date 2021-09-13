@@ -1,7 +1,5 @@
 package com.mahdiba97.notes
 
-import android.app.ActionBar
-import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
@@ -14,14 +12,15 @@ const val SELECTED_NOTE_KEY = "selectedNoteKey"
 const val URL = "http://10.0.2.2:9000/"
 const val THEME_KEY = "theme_key"
 const val LANGUAGE_KEY = "language_key"
+
 @Suppress("DEPRECATION")
 fun networkAvailable(app: Context): Boolean {
-    val connectivityManager = app.getSystemService(Context.CONNECTIVITY_SERVICE)
-            as ConnectivityManager
-    val networkInfo = connectivityManager.activeNetworkInfo
-    return networkInfo?.isConnectedOrConnecting ?: false
+  val connectivityManager = app.getSystemService(Context.CONNECTIVITY_SERVICE)
+      as ConnectivityManager
+  val networkInfo = connectivityManager.activeNetworkInfo
+  return networkInfo?.isConnectedOrConnecting ?: false
 }
 
-fun actionbar(activity:FragmentActivity?): androidx.appcompat.app.ActionBar? {
-    return (activity as AppCompatActivity).supportActionBar
+fun actionbar(activity: FragmentActivity?): androidx.appcompat.app.ActionBar? {
+  return (activity as AppCompatActivity).supportActionBar
 }

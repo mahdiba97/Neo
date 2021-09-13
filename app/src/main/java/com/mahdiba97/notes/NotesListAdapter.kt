@@ -4,22 +4,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.jakewharton.rxrelay3.BehaviorRelay
 import com.mahdiba97.notes.data.NoteEntity
 import com.mahdiba97.notes.databinding.ListItemBinding
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class NotesListAdapter(
-  private val notesList: List<NoteEntity>,
-  private val listener: OnItemSelectListener
+  val noteId: (Int) -> Unit, val numberOfSelectedItems: (Int) -> Unit
 ) :
   RecyclerView.Adapter<NotesListAdapter.ViewHolder>() {
+  internal var notesItem = BehaviorSubject.create<List<NoteEntity>>()
   var selectedNotes = arrayListOf<NoteEntity>()
   val positions = arrayListOf<Int>()
-
-  companion object {
-    var numberOfSelectedItems: BehaviorRelay<Int> = BehaviorRelay.create()
-    var positionOfSelectedItems: BehaviorRelay<List<Int>> = BehaviorRelay.create()
-  }
 
   inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val binding = ListItemBinding.bind(itemView)
@@ -32,16 +27,16 @@ class NotesListAdapter(
     )
   }
 
-  override fun getItemCount() = notesList.size
+  override fun getItemCount() = notesItem.blockingFirst().size
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    val note = notesList[position]
+    val note = notesItem.blockingFirst()[position]
     with(holder.binding) {
       noteText.text = note.text
 
       root.setOnClickListener {
         if (selectedNotes.size == 0) {
-          listener.navigateToEditorFragment(note.id)
+          noteId(note.id)
         }
       }
 
@@ -56,17 +51,12 @@ class NotesListAdapter(
           positions.add(position)
           fab.setImageResource(R.drawable.ic_check)
         }
-        numberOfSelectedItems.accept(selectedNotes.size)
-        positionOfSelectedItems.accept(positions)
+        numberOfSelectedItems(selectedNotes.size)
       }
       fab.setImageResource(
         if (selectedNotes.contains(note)) R.drawable.ic_check
         else R.drawable.ic_note
       )
     }
-  }
-
-  interface OnItemSelectListener {
-    fun navigateToEditorFragment(noteId: Int)
   }
 }
