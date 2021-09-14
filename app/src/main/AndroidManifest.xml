@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.mahdiba97.notes" >
+    package="com.mahdiba97.notes">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -14,27 +14,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Neo"
         android:usesCleartextTraffic="true"
-        tools:targetApi="m" >
+        tools:targetApi="m">
         <activity
             android:name=".SettingsActivity"
             android:exported="true"
             android:label="@string/settings" />
         <activity
-            android:name=".WelcomeActivity"
-            android:noHistory="true" >
+            android:name=".MainActivity"
+            android:theme="@style/splashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".MainActivity" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="text/*"/>
+                <action android:name="android.intent.action.SEND" />
+
+                <data android:mimeType="text/*" />
             </intent-filter>
         </activity>
     </application>
