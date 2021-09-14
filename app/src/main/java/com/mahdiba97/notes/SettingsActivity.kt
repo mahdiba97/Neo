@@ -43,9 +43,13 @@ class SettingsActivity : AppCompatActivity() {
       }
 
       findPreference<ListPreference>("theme_key")?.setOnPreferenceChangeListener { preference, newValue ->
-        if (newValue != PrefHelper.getTheme(requireContext()))
-          PrefHelper.setTheme(newValue.toString())
-
+        if (newValue != PrefHelper.getTheme(requireContext())) {
+//          PrefHelper.setTheme(newValue.toString())
+          val myIntent = Intent(requireContext(), MainActivity::class.java)
+          myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+          myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+          startActivity(myIntent)
+        }
         true
       }
     }

@@ -19,18 +19,10 @@ class PrefHelper {
         "Night" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
       }
-    }
-
-    fun setTheme(key: String) {
-      when (key) {
-        "Light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        "Night" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-      }
+      context.setTheme(R.style.Theme_Neo)
     }
 
     fun setLanguage(context: Context) {
-
       val local = when (pref(context).getString(LANGUAGE_KEY, "Default").toString()) {
         "Persian" -> Locale("fa")
         else -> Locale("en")
