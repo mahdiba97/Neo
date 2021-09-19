@@ -127,7 +127,11 @@ class MainFragment : Fragment() {
         startActivity(Intent(context, SettingsActivity::class.java))
         true
       }
-      R.id.action_about -> true
+      R.id.action_about -> {
+        val action = MainFragmentDirections.actionAboutFragment()
+        findNavController().navigate(action)
+        true
+      }
       else -> super.onOptionsItemSelected(item)
     }
 

@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_editor_fragment"
             app:destination="@id/editorFragment" />
+        <action
+            android:id="@+id/action_aboutFragment"
+            app:destination="@id/aboutFragment" />
     </fragment>
     <fragment
         android:id="@+id/editorFragment"
@@ -24,4 +27,9 @@
             app:argType="integer"
             android:defaultValue="0" />
     </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.mahdiba97.notes.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
 </navigation>

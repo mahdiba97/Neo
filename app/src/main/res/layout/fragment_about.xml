@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AboutFragment">
+
+    <TextView
+        android:id="@+id/tvAbout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:gravity="top|center"
+        android:lineSpacingExtra="6sp"
+        tools:text="version name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_marginTop="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvAbout"
+        app:layout_constraintRight_toLeftOf="@id/tvTwitterAccount"
+        android:id="@+id/imageView"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:layout_width="@dimen/twitter_icon_size"
+        android:layout_height="@dimen/twitter_icon_size"
+        android:src="@drawable/ic_twitter_logo" />
+
+    <TextView
+        app:layout_constraintTop_toTopOf="@id/imageView"
+        app:layout_constraintBottom_toBottomOf="@id/imageView"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvAbout"
+        app:layout_constraintLeft_toRightOf="@id/imageView"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:gravity="center"
+        android:id="@+id/tvTwitterAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/twitter_account"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
