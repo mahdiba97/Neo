@@ -14,7 +14,6 @@ class NotesListAdapter(
   RecyclerView.Adapter<NotesListAdapter.ViewHolder>() {
   internal var notesItem = BehaviorSubject.create<List<NoteEntity>>()
   var selectedNotes = arrayListOf<NoteEntity>()
-  val positions = arrayListOf<Int>()
 
   inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val binding = ListItemBinding.bind(itemView)
@@ -44,11 +43,9 @@ class NotesListAdapter(
       fab.setOnClickListener {
         if (selectedNotes.contains(note)) {
           selectedNotes.remove(note)
-          positions.remove(position)
           fab.setImageResource(R.drawable.ic_note)
         } else {
           selectedNotes.add(note)
-          positions.add(position)
           fab.setImageResource(R.drawable.ic_check)
         }
         numberOfSelectedItems(selectedNotes.size)

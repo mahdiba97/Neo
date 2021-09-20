@@ -46,14 +46,10 @@ class MainFragment : Fragment() {
   private fun notesListSetup(savedInstanceState: Bundle?) {
     adapter = NotesListAdapter({ //onClick
       navigateToEditorFragment(it)
-    }, {//number on selected item, it's for change toolbar title to recursive number
+    }, {//number of selected items, it's for change toolbar title to recursive number
       changeTitleAndArrowDirection(it)
     })
 
-    adapter.notesItem.subscribeOn(AndroidSchedulers.mainThread()).subscribe {
-      for (i in adapter.positions)
-        adapter.notifyItemChanged(i)
-    }.addTo(bag)
     with(binding.mainRecycler) {
       setHasFixedSize(true)
       val divider = DividerItemDecoration(context, LinearLayoutManager(context).orientation)
@@ -63,30 +59,20 @@ class MainFragment : Fragment() {
       adapter.notesItem.onNext(notes)
       binding.mainRecycler.adapter = adapter
       binding.mainRecycler.layoutManager = LinearLayoutManager(activity)
-
-      val selectedNote = savedInstanceState?.getParcelableArrayList(SELECTED_NOTE_KEY)
-        ?: emptyList<NoteEntity>() //save state of the selected items when orientation change
-      adapter.selectedNotes.addAll(selectedNote)
+      orientationChange(savedInstanceState)
     })
+
   }
-
-
-  private fun onBackPressed() {
-    requireActivity().onBackPressedDispatcher.addCallback(
-      viewLifecycleOwner,
-      object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-          if (adapter.selectedNotes.isEmpty()) remove()
-          else handleBackPressedEvent()
-        }
-      })
-  }
-
   override fun onSaveInstanceState(outState: Bundle) {
     if (this::adapter.isInitialized) {
       outState.putParcelableArrayList(SELECTED_NOTE_KEY, adapter.selectedNotes)
     }
     super.onSaveInstanceState(outState)
+  }
+  private fun orientationChange(savedInstanceState: Bundle?) {
+    val selectedNote = savedInstanceState?.getParcelableArrayList(SELECTED_NOTE_KEY)
+      ?: emptyList<NoteEntity>() //save state of the selected items when orientation change
+    adapter.selectedNotes.addAll(selectedNote)
   }
 
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -137,13 +123,19 @@ class MainFragment : Fragment() {
 
   }
 
+  private fun onBackPressed() {
+    requireActivity().onBackPressedDispatcher.addCallback(
+      viewLifecycleOwner,
+      object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+          if (adapter.selectedNotes.isEmpty()) remove()
+          else handleBackPressedEvent()
+        }
+      })
+  }
   private fun handleBackPressedEvent() {
-    val positions = adapter.positions
-    for (i in positions) {
-      adapter.notifyItemChanged(i)
-    }
+    adapter.notifyDataSetChanged()
     adapter.selectedNotes.clear()
-    adapter.positions.clear()
     actionbar(activity)?.setDisplayHomeAsUpEnabled(false)
     actionbar(activity)?.title = getString(R.string.app_name)
     requireActivity().invalidateOptionsMenu()
@@ -153,7 +145,6 @@ class MainFragment : Fragment() {
     viewModel.deleteNotes(adapter.selectedNotes)
     Handler(Looper.getMainLooper()).postDelayed({
       adapter.selectedNotes.clear()
-      adapter.positions.clear()
       changeTitleAndArrowDirection(0)
     }, 100)
     return true
@@ -176,6 +167,14 @@ class MainFragment : Fragment() {
     } else
       actionbar(activity)?.title = getString(R.string.app_name)
     requireActivity().invalidateOptionsMenu()   //Reset optionsMenu
+  }
+
+  override fun onResume() {
+    super.onResume()
+    changeTitleAndArrowDirection(adapter.selectedNotes.size)
+    adapter.notesItem.subscribeOn(AndroidSchedulers.mainThread()).subscribe {
+      //do something with new data
+    }.addTo(bag)
   }
 
   override fun onDestroy() {

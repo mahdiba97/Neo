@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.mahdiba97.notes.databinding.FragmentAboutBinding
@@ -45,7 +44,6 @@ class AboutFragment : Fragment() {
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     return if (item.itemId == android.R.id.home) {
       findNavController().navigateUp()
-      Toast.makeText(requireContext(), "", Toast.LENGTH_SHORT).show()
       true
     } else super.onOptionsItemSelected(item)
   }
