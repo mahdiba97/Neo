@@ -43,6 +43,7 @@ class MainFragment : Fragment() {
     return binding.root
   }
 
+  //region getting data from viewModel and implement recyclerView
   private fun notesListSetup(savedInstanceState: Bundle?) {
     adapter = NotesListAdapter({ //onClick
       navigateToEditorFragment(it)
@@ -63,18 +64,26 @@ class MainFragment : Fragment() {
     })
 
   }
+  //endregion
+
+
+  //region add data to bundle and get it when orientationChanged for saving UI state
   override fun onSaveInstanceState(outState: Bundle) {
     if (this::adapter.isInitialized) {
       outState.putParcelableArrayList(SELECTED_NOTE_KEY, adapter.selectedNotes)
     }
     super.onSaveInstanceState(outState)
   }
+
   private fun orientationChange(savedInstanceState: Bundle?) {
     val selectedNote = savedInstanceState?.getParcelableArrayList(SELECTED_NOTE_KEY)
       ?: emptyList<NoteEntity>() //save state of the selected items when orientation change
     adapter.selectedNotes.addAll(selectedNote)
   }
+  //endregion
 
+
+  //region implement options menu
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
     val menuId: Int
     if (
@@ -122,23 +131,11 @@ class MainFragment : Fragment() {
     }
 
   }
+  //endregion
 
-  private fun onBackPressed() {
-    requireActivity().onBackPressedDispatcher.addCallback(
-      viewLifecycleOwner,
-      object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-          if (adapter.selectedNotes.isEmpty()) remove()
-          else handleBackPressedEvent()
-        }
-      })
-  }
-  private fun handleBackPressedEvent() {
-    adapter.notifyDataSetChanged()
-    adapter.selectedNotes.clear()
-    actionbar(activity)?.setDisplayHomeAsUpEnabled(false)
-    actionbar(activity)?.title = getString(R.string.app_name)
-    requireActivity().invalidateOptionsMenu()
+  private fun navigateToEditorFragment(noteId: Int) {
+    val action = MainFragmentDirections.actionEditorFragment(noteId)
+    findNavController().navigate(action)
   }
 
   private fun deleteNotes(): Boolean {
@@ -150,10 +147,26 @@ class MainFragment : Fragment() {
     return true
   }
 
-  private fun navigateToEditorFragment(noteId: Int) {
-    val action = MainFragmentDirections.actionEditorFragment(noteId)
-    findNavController().navigate(action)
+  //region add action to backPressedEvent
+  private fun handleBackPressedEvent() {
+    adapter.notifyDataSetChanged()
+    adapter.selectedNotes.clear()
+    actionbar(activity)?.setDisplayHomeAsUpEnabled(false)
+    actionbar(activity)?.title = getString(R.string.app_name)
+    requireActivity().invalidateOptionsMenu()
   }
+
+  private fun onBackPressed() {
+    requireActivity().onBackPressedDispatcher.addCallback(
+      viewLifecycleOwner,
+      object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+          if (adapter.selectedNotes.isEmpty()) remove()
+          else handleBackPressedEvent()
+        }
+      })
+  }
+  //endregion
 
 
   private fun changeTitleAndArrowDirection(count: Int) {

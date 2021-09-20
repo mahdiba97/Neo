@@ -11,6 +11,7 @@ class SettingsActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.settings_activity)
+    PrefHelper.setLanguage(this)
     title = getString(R.string.settings)
     if (savedInstanceState == null) {
       supportFragmentManager
@@ -53,7 +54,6 @@ class SettingsActivity : AppCompatActivity() {
         true
       }
     }
-
   }
 
 }
