@@ -1,4 +1,4 @@
-package com.mahdiba97.notes
+package com.mahdiba97.notes.ui.editor
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

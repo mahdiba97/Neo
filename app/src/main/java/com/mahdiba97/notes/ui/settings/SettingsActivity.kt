@@ -1,4 +1,4 @@
-package com.mahdiba97.notes
+package com.mahdiba97.notes.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,9 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
+import com.mahdiba97.notes.ui.MainActivity
+import com.mahdiba97.notes.utils.PrefHelper
+import com.mahdiba97.notes.R
 
 class SettingsActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {

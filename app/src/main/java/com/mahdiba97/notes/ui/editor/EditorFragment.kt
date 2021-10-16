@@ -1,4 +1,4 @@
-package com.mahdiba97.notes
+package com.mahdiba97.notes.ui.editor
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.mahdiba97.notes.CURSOR_POSITION_KEY
+import com.mahdiba97.notes.NOTE_TEXT_KEY
+import com.mahdiba97.notes.R
 import com.mahdiba97.notes.data.NoteEntity
 import com.mahdiba97.notes.databinding.EditorFragmentBinding
 import java.util.*

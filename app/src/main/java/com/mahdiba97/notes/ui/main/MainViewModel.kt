@@ -1,4 +1,4 @@
-package com.mahdiba97.notes
+package com.mahdiba97.notes.ui.main
 
 import android.app.Application
 import android.content.Context

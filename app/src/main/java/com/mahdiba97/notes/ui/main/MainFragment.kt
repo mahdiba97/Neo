@@ -1,4 +1,4 @@
-package com.mahdiba97.notes
+package com.mahdiba97.notes.ui.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,8 +11,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mahdiba97.notes.*
 import com.mahdiba97.notes.data.NoteEntity
 import com.mahdiba97.notes.databinding.MainFragmentBinding
+import com.mahdiba97.notes.ui.settings.SettingsActivity
+import com.mahdiba97.notes.utils.PrefHelper
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo

@@ -1,4 +1,4 @@
-package com.mahdiba97.notes
+package com.mahdiba97.notes.ui.about
 
 import android.content.Intent
 import android.net.Uri
@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.mahdiba97.notes.R
+import com.mahdiba97.notes.actionbar
 import com.mahdiba97.notes.databinding.FragmentAboutBinding
 import java.text.DateFormat
 import java.util.*

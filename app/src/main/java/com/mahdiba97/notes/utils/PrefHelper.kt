@@ -1,9 +1,12 @@
-package com.mahdiba97.notes
+package com.mahdiba97.notes.utils
 
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
+import com.mahdiba97.notes.LANGUAGE_KEY
+import com.mahdiba97.notes.R
+import com.mahdiba97.notes.THEME_KEY
 import java.util.*
 
 
