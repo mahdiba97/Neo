@@ -1,30 +1,22 @@
 package com.mahdiba97.notes.ui.main
 
-import android.app.Application
-import android.content.Context
-import android.net.ConnectivityManager
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mahdiba97.notes.data.AppDatabase
 import com.mahdiba97.notes.data.NoteEntity
-import kotlinx.coroutines.Dispatchers
+import com.mahdiba97.notes.repository.Repository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class MainViewModel(val app: Application) : AndroidViewModel(app) {
-    private val appDatabase = AppDatabase.getInstance(app)
-    val notesList = appDatabase?.noteDao()?.getAll()
+@HiltViewModel
+class MainViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
+  val notesList = repository.getLiveNotes()
 
-    //    Room
-    fun deleteNotes(notes: List<NoteEntity>) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                appDatabase?.noteDao()?.deleteNotes(notes)
-            }
-        }
+  fun deleteNotes(notes: List<NoteEntity>) {
+    viewModelScope.launch {
+      repository.deleteSelectedNotes(notes)
     }
-
-
+  }
 
 
 }

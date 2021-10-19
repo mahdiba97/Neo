@@ -7,7 +7,7 @@ import android.os.Looper
 import android.view.*
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,9 +20,10 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 
+
 class MainFragment : Fragment() {
   private lateinit var binding: MainFragmentBinding
-  private lateinit var viewModel: MainViewModel
+  private val viewModel: MainViewModel by activityViewModels()
   private lateinit var adapter: NotesListAdapter
   private val bag = CompositeDisposable()
   override fun onCreateView(
@@ -35,7 +36,6 @@ class MainFragment : Fragment() {
       it.title = getString(R.string.app_name)
     }
     setHasOptionsMenu(true)
-    viewModel = ViewModelProvider(this)[MainViewModel::class.java]
     binding = MainFragmentBinding.inflate(inflater, container, false)
 
     binding.fabMain.setOnClickListener {
@@ -43,8 +43,10 @@ class MainFragment : Fragment() {
     }
     notesListSetup(savedInstanceState)
     onBackPressed()
+
     return binding.root
   }
+
 
   //region getting data from viewModel and implement recyclerView
   private fun notesListSetup(savedInstanceState: Bundle?) {
@@ -59,7 +61,7 @@ class MainFragment : Fragment() {
       val divider = DividerItemDecoration(context, LinearLayoutManager(context).orientation)
       addItemDecoration(divider)
     }
-    viewModel.notesList?.observe(viewLifecycleOwner, { notes ->
+    viewModel.notesList.observe(viewLifecycleOwner, { notes ->
       adapter.notesItem.onNext(notes)
       binding.mainRecycler.adapter = adapter
       binding.mainRecycler.layoutManager = LinearLayoutManager(activity)

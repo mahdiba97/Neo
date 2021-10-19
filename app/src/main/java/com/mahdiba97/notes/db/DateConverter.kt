@@ -1,4 +1,4 @@
-package com.mahdiba97.notes.data
+package com.mahdiba97.notes.db
 
 import androidx.room.TypeConverter
 import java.util.*
