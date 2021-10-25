@@ -1,6 +1,9 @@
 package com.mahdiba97.notes.ui.editor
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.viewModelScope
 import com.mahdiba97.notes.data.NoteEntity
 import com.mahdiba97.notes.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,14 +12,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditorViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
-  private val _currentNote = MutableLiveData<NoteEntity>()
-  val currentNote: LiveData<NoteEntity> = _currentNote
-  fun getNoteById(noteId: Int) {
+  fun getNoteById(noteId: Int, note: (NoteEntity?) -> Unit) {
     viewModelScope.launch {
-      val noteEntity = repository.getNoteById(noteId)
-      _currentNote.postValue(noteEntity!!)
+      note(repository.getNoteById(noteId))
     }
   }
+
 
   fun addNote(note: NoteEntity) {
     viewModelScope.launch {

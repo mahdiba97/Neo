@@ -6,13 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mahdiba97.notes.R
 import com.mahdiba97.notes.databinding.ListItemBinding
-import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class NotesListAdapter(
   val noteId: (Int) -> Unit, val numberOfSelectedItems: (Int) -> Unit
 ) :
   RecyclerView.Adapter<NotesListAdapter.ViewHolder>() {
-  internal var notesItem = BehaviorSubject.create<List<NoteEntity>>()
+  var notesItem = mutableListOf<NoteEntity>()
   var selectedNotes = arrayListOf<NoteEntity>()
 
   inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -26,19 +25,22 @@ class NotesListAdapter(
     )
   }
 
-  override fun getItemCount() = notesItem.blockingFirst().size
+  fun setData(notes: List<NoteEntity>) {
+    notesItem.clear()
+    notesItem.addAll(notes)
+  }
+
+  override fun getItemCount() = notesItem.size
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    val note = notesItem.blockingFirst()[position]
+    val note = notesItem[position]
     with(holder.binding) {
       noteText.text = note.text
-
       root.setOnClickListener {
         if (selectedNotes.size == 0) {
           noteId(note.id)
         }
       }
-
 
       fab.setOnClickListener {
         if (selectedNotes.contains(note)) {

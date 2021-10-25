@@ -6,7 +6,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -14,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import com.mahdiba97.notes.CURSOR_POSITION_KEY
 import com.mahdiba97.notes.NOTE_TEXT_KEY
 import com.mahdiba97.notes.R
+import com.mahdiba97.notes.actionbar
 import com.mahdiba97.notes.data.NoteEntity
 import com.mahdiba97.notes.databinding.EditorFragmentBinding
 import java.util.*
@@ -29,7 +29,7 @@ class EditorFragment : Fragment() {
   ): View {
     noteId = args.id
     binding = EditorFragmentBinding.inflate(inflater, container, false)
-    (activity as AppCompatActivity).supportActionBar?.let {
+    actionbar(requireActivity())?.let {
       it.setHomeButtonEnabled(true)
       it.setDisplayShowHomeEnabled(true)
       it.setDisplayHomeAsUpEnabled(true)
@@ -38,7 +38,6 @@ class EditorFragment : Fragment() {
         it.title = getString(R.string.new_note)
       } else {
         it.title = getString(R.string.edit_note)
-        viewModel.getNoteById(noteId)
       }
     }
     setHasOptionsMenu(true)
@@ -50,12 +49,12 @@ class EditorFragment : Fragment() {
           saveAndReturn()
         }
       })
-    viewModel.currentNote.observe(viewLifecycleOwner, {
+    if (noteId != 0) viewModel.getNoteById(noteId){
       val savedString = savedInstanceState?.getString(NOTE_TEXT_KEY)
       val cursorPosition = savedInstanceState?.getInt(CURSOR_POSITION_KEY) ?: 0
-      binding.noteEditor.setText(savedString ?: it.text)
+      binding.noteEditor.setText(savedString ?: it?.text)
       binding.noteEditor.setSelection(cursorPosition)
-    })
+    }
     return binding.root
   }
 

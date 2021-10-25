@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jakewharton.rxrelay3.BehaviorRelay
 import com.mahdiba97.notes.NEW_NOTE_ID
 import com.mahdiba97.notes.R
 import com.mahdiba97.notes.SELECTED_NOTE_KEY
@@ -20,18 +21,17 @@ import com.mahdiba97.notes.data.NotesListAdapter
 import com.mahdiba97.notes.databinding.MainFragmentBinding
 import com.mahdiba97.notes.ui.settings.SettingsActivity
 import com.mahdiba97.notes.utils.PrefHelper
+import com.mahdiba97.notes.utils.StateWrapper
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
-import io.reactivex.rxjava3.subjects.PublishSubject
-import java.util.concurrent.TimeUnit
 
 
 class MainFragment : Fragment() {
   private lateinit var binding: MainFragmentBinding
   private val viewModel: MainViewModel by activityViewModels()
   private lateinit var adapter: NotesListAdapter
-  private var fabOnclick = PublishSubject.create<View>()
+  private val backPressObserver = BehaviorRelay.createDefault(StateWrapper(false, 0))
   private val bag = CompositeDisposable()
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -47,21 +47,11 @@ class MainFragment : Fragment() {
 
     binding.fabMain.setOnClickListener {
       navigateToEditorFragment(NEW_NOTE_ID)
-      fabOnclick.onNext(it)
     }
-    handleUserInteractions()
     notesListSetup(savedInstanceState)
     onBackPressed()
 
     return binding.root
-  }
-
-  private fun handleUserInteractions() {
-    fabOnclick.throttleFirst(1000, TimeUnit.MILLISECONDS)
-      .subscribeOn(AndroidSchedulers.mainThread())
-      .subscribe {
-
-      }
   }
 
 
@@ -69,8 +59,8 @@ class MainFragment : Fragment() {
   private fun notesListSetup(savedInstanceState: Bundle?) {
     adapter = NotesListAdapter({ //onClick
       navigateToEditorFragment(it)
-    }, {//number of selected items, it's for change toolbar title to recursive number
-      changeTitleAndArrowDirection(it)
+    }, { numberOfSelectedItem ->
+      backPressObserver.accept(StateWrapper(true, numberOfSelectedItem))
     })
 
     with(binding.mainRecycler) {
@@ -79,7 +69,7 @@ class MainFragment : Fragment() {
       addItemDecoration(divider)
     }
     viewModel.notesList.observe(viewLifecycleOwner, { notes ->
-      adapter.notesItem.onNext(notes)
+      adapter.setData(notes)
       binding.mainRecycler.adapter = adapter
       binding.mainRecycler.layoutManager = LinearLayoutManager(activity)
       orientationChange(savedInstanceState)
@@ -164,7 +154,7 @@ class MainFragment : Fragment() {
     viewModel.deleteNotes(adapter.selectedNotes)
     Handler(Looper.getMainLooper()).postDelayed({
       adapter.selectedNotes.clear()
-      changeTitleAndArrowDirection(0)
+      backPressObserver.accept(StateWrapper(true, 0))
     }, 100)
     return true
   }
@@ -206,10 +196,13 @@ class MainFragment : Fragment() {
 
   override fun onResume() {
     super.onResume()
-    changeTitleAndArrowDirection(adapter.selectedNotes.size)
-    adapter.notesItem.subscribeOn(AndroidSchedulers.mainThread()).subscribe {
-      //do something with new data
+    backPressObserver.subscribeOn(AndroidSchedulers.mainThread()).subscribe {
+      if (it.state) {
+        changeTitleAndArrowDirection(it.count)
+        backPressObserver.accept(StateWrapper(false, 0))
+      }
     }.addTo(bag)
+
   }
 
   override fun onDestroy() {
