@@ -17,5 +17,5 @@ Android Notes demonstrates utilizing these components to create a simple noting 
 Screenshots
 ------------
 <p align="center">
-<img src="https://github.com/mahdiba97/Notes/Screenshots/notes_screen.png"/>
+<img src="https://github.com/mahdiba97/Notes/blob/master/screenshots/notes_screen.png"/>
 </p>
