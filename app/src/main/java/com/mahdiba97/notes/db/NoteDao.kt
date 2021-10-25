@@ -3,7 +3,6 @@ package com.mahdiba97.notes.db
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.mahdiba97.notes.data.NoteEntity
-import io.reactivex.rxjava3.core.Maybe
 
 @Dao
 interface NoteDao {

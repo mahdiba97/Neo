@@ -1,10 +1,10 @@
-package com.mahdiba97.notes
+package com.mahdiba97.notes.data
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.mahdiba97.notes.data.NoteEntity
+import com.mahdiba97.notes.R
 import com.mahdiba97.notes.databinding.ListItemBinding
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 

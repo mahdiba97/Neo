@@ -13,18 +13,22 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mahdiba97.notes.*
 import com.mahdiba97.notes.data.NoteEntity
+import com.mahdiba97.notes.data.NotesListAdapter
 import com.mahdiba97.notes.databinding.MainFragmentBinding
 import com.mahdiba97.notes.ui.settings.SettingsActivity
 import com.mahdiba97.notes.utils.PrefHelper
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
+import io.reactivex.rxjava3.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 
 
 class MainFragment : Fragment() {
   private lateinit var binding: MainFragmentBinding
   private val viewModel: MainViewModel by activityViewModels()
   private lateinit var adapter: NotesListAdapter
+  private var fabOnclick = PublishSubject.create<View>()
   private val bag = CompositeDisposable()
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -40,11 +44,21 @@ class MainFragment : Fragment() {
 
     binding.fabMain.setOnClickListener {
       navigateToEditorFragment(NEW_NOTE_ID)
+      fabOnclick.onNext(it)
     }
+    handleUserInteractions()
     notesListSetup(savedInstanceState)
     onBackPressed()
 
     return binding.root
+  }
+
+  private fun handleUserInteractions() {
+    fabOnclick.throttleFirst(1000, TimeUnit.MILLISECONDS)
+      .subscribeOn(AndroidSchedulers.mainThread())
+      .subscribe {
+
+      }
   }
 
 
