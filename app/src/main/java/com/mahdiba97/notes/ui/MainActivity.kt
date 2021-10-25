@@ -12,10 +12,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-  init {
-
-  }
-
   lateinit var viewModel: EditorViewModel
   override fun onCreate(savedInstanceState: Bundle?) {
     PrefHelper.setTheme(this)

@@ -11,7 +11,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mahdiba97.notes.*
+import com.mahdiba97.notes.NEW_NOTE_ID
+import com.mahdiba97.notes.R
+import com.mahdiba97.notes.SELECTED_NOTE_KEY
+import com.mahdiba97.notes.actionbar
 import com.mahdiba97.notes.data.NoteEntity
 import com.mahdiba97.notes.data.NotesListAdapter
 import com.mahdiba97.notes.databinding.MainFragmentBinding
